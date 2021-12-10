@@ -6,11 +6,12 @@ import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 /**
  * Unit test file to test ListApiService class
@@ -79,5 +80,21 @@ public class ListApiServiceTest {
         Meeting meetingToRemove = service.getListMeetings().get(0);
         service.getListMeetings().remove(meetingToRemove);
         Assert.assertFalse(service.getListMeetings().contains(meetingToRemove));
+    }
+
+    @Test
+    public void findByNameWhenExist() throws EmployeeNotFound {
+        Employee toFind = service.getListEmployees().get(1);
+        assertEquals(toFind, service.findByName(toFind.getName()));
+    }
+
+    @Test
+    public void findByNameWhenNotExist(){
+        try{
+            service.findByName("Pierre");
+            Assert.fail("L'utilisateur existe");
+        }catch (EmployeeNotFound e){
+            assertNotNull(e);
+        }
     }
 }
