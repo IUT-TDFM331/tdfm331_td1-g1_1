@@ -97,4 +97,28 @@ public class ListApiServiceTest {
             assertNotNull(e);
         }
     }
+
+    @Test
+    public void removeMeeting() {
+        // Get first Meeting from list
+        Meeting meetingToRemove = service.getListMeetings().get(0);
+        service.removeMeeting(meetingToRemove);
+        Assert.assertFalse(service.getListMeetings().contains(meetingToRemove));
+    }
+
+    @Test
+    public void findByObjectWhenMeetingExist() throws MeetingNotFound {
+        Meeting meetingToFind = service.getListMeetings().get(0);
+        assertEquals(meetingToFind, service.findByObject(meetingToFind.getObjectMeeting()));
+    }
+
+    @Test
+    public void findByObjectWhenMeetingNotExist() {
+        try {
+            service.findByObject("meeting2");
+            Assert.fail("le meeting existe");
+        } catch (MeetingNotFound meetingNotFound) {
+            assertNotNull(meetingNotFound);
+        }
+    }
 }
